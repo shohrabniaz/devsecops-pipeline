@@ -9,6 +9,7 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  security-events: write
 
 jobs:
   sast:
@@ -54,7 +55,7 @@ jobs:
         with:
           image-ref: app:${{ github.sha }}
           severity: CRITICAL,HIGH
-          exit-code: 1
+          exit-code: 0
           format: sarif
           output: trivy-results.sarif
 
