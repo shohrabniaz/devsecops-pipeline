@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, jsonify
 
 app = Flask(__name__)
@@ -14,4 +16,7 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    # Default 127.0.0.1 for local dev; Docker sets FLASK_HOST=0.0.0.0
+    host = os.environ.get("FLASK_HOST", "127.0.0.1")
+    port = int(os.environ.get("PORT", "8080"))
+    app.run(host=host, port=port)
