@@ -60,4 +60,4 @@ make scan
 
 ## Author
 
-MS Cybersecurity @ UniSC · Lead DevOps Engineer
+MS Cybersecurity · Lead DevOps Engineer
