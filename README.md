@@ -26,7 +26,7 @@ flowchart LR
 - Semgrep SAST on application code
 - Checkov on Terraform (when added)
 - Trivy filesystem + container scanning
-- Fail build on CRITICAL/HIGH vulnerabilities
+- Trivy image scan (CRITICAL/HIGH reported; SARIF artifact on `main`)
 - Compliance report artifact on `main`
 
 ## Quick start
