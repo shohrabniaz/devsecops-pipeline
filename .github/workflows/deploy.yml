@@ -1,50 +1,35 @@
-name: Deploy to Kubernetes
+name: Build and Publish Image
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - app/**
+      - .github/workflows/deploy.yml
   workflow_dispatch:
-    inputs:
-      context:
-        description: kubectl context (optional)
-        required: false
-        default: ""
 
 permissions:
   contents: read
   packages: write
 
 jobs:
-  deploy:
+  build-push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: docker/login-action@v3
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push image
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: app
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/devsecops-demo:latest
-            ghcr.io/${{ github.repository_owner }}/devsecops-demo:${{ github.sha }}
-
-      - name: Configure kubeconfig
-        run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
-          chmod 600 ~/.kube/config
-          if [ -n "${{ inputs.context }}" ]; then
-            kubectl config use-context "${{ inputs.context }}"
-          fi
-          kubectl get nodes
-
-      - name: Deploy manifests
-        run: |
-          kubectl apply -f k8s/deployment.yaml
-          kubectl rollout status deployment/devsecops-demo -n demo --timeout=120s
-          kubectl get pods -n demo -l app=devsecops-demo
+            ghcr.io/shohrabniaz/devsecops-pipeline:latest
+            ghcr.io/shohrabniaz/devsecops-pipeline:${{ github.sha }}

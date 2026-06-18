@@ -54,9 +54,13 @@ make scan
 - Branch protection: require CI pass before merge
 - See `docs/security.md`
 
-## Cost
+## Deploy to cluster
 
-**$0** — runs on GitHub Actions free tier for public repos.
+Image publishes to `ghcr.io/shohrabniaz/devsecops-pipeline` on every `main` push.
+
+GitOps: `gitops-platform` deploys `devsecops-demo` in the `demo` namespace via Argo CD.
+
+**First time:** set the GHCR package to **public** (Packages → devsecops-pipeline → Package settings → Change visibility).
 
 ## Author
 
